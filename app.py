@@ -103,7 +103,7 @@ def get_lost_items():
         conn.close()
         return jsonify(items), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500u
+        return jsonify({"error": str(e)}), 500
 # --- MAIN BLOCK (Must be at the very bottom) ---
 if __name__ == '__main__':
     print("🚀 Speak & Seek Backend is running...")
