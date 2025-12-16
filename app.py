@@ -11,7 +11,9 @@ load_dotenv()
 
 app = Flask(__name__)
 CORS(app)
-
+@app.route('/')
+def home():
+    return "Project is running!"
 # 2. Configuration
 cloudinary.config(
     cloud_name = os.environ.get('CLOUDINARY_CLOUD_NAME'),
@@ -101,7 +103,7 @@ def get_lost_items():
         conn.close()
         return jsonify(items), 200
     except Exception as e:
-        return jsonify({"error": str(e)}), 500
+        return jsonify({"error": str(e)}), 500u
 # --- MAIN BLOCK (Must be at the very bottom) ---
 if __name__ == '__main__':
     print("🚀 Speak & Seek Backend is running...")
