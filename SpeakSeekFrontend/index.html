@@ -1,0 +1,371 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Speak & Seek | Animated Edition</title>
+    <link href="https://fonts.googleapis.com/css2?family=Outfit:wght@300;400;700;900&display=swap" rel="stylesheet">
+    <style>
+        /* --- ANIMATED CSS STYLES --- */
+        :root {
+            --bg-gradient: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%);
+            --card-bg: rgba(255, 255, 255, 0.9);
+            --primary: #ff0055;
+            --secondary: #00d2ff;
+            --accent: #f9d423;
+        }
+
+        body {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            background: var(--bg-gradient);
+            background-size: 400% 400%;
+            animation: gradientBG 15s ease infinite;
+            color: #333;
+            min-height: 100vh;
+            overflow-x: hidden;
+        }
+
+        @keyframes gradientBG {
+            0% { background-position: 0% 50%; }
+            50% { background-position: 100% 50%; }
+            100% { background-position: 0% 50%; }
+        }
+
+        /* Navbar with Slide Down */
+        .navbar {
+            background: rgba(255,255,255,0.1);
+            backdrop-filter: blur(15px);
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            border-bottom: 1px solid rgba(255,255,255,0.2);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+            animation: slideDown 0.8s ease-out;
+        }
+
+        @keyframes slideDown {
+            from { transform: translateY(-100%); }
+            to { transform: translateY(0); }
+        }
+
+        .navbar h1 { margin: 0; color: white; font-weight: 900; letter-spacing: 1px; }
+        
+        .nav-links button {
+            background: rgba(0,0,0,0.2);
+            border: none;
+            color: white;
+            padding: 10px 25px;
+            margin-left: 10px;
+            border-radius: 30px;
+            cursor: pointer;
+            font-weight: 700;
+            transition: all 0.3s cubic-bezier(0.175, 0.885, 0.32, 1.275); /* Bouncy transition */
+        }
+        .nav-links button:hover, .nav-links button.active {
+            background: white;
+            color: #1e3c72;
+            transform: scale(1.1);
+            box-shadow: 0 0 20px rgba(255,255,255,0.6);
+        }
+
+        .container { max-width: 1100px; margin: 3rem auto; padding: 0 20px; }
+
+        /* Section Entry Animation */
+        .section { display: none; }
+        .section.active { display: block; animation: zoomIn 0.5s ease-out; }
+
+        @keyframes zoomIn {
+            from { opacity: 0; transform: scale(0.95); }
+            to { opacity: 1; transform: scale(1); }
+        }
+
+        /* Glass Cards */
+        .card {
+            background: var(--card-bg);
+            padding: 2.5rem;
+            border-radius: 25px;
+            box-shadow: 0 15px 35px rgba(0,0,0,0.2);
+            margin-bottom: 2rem;
+            border: 1px solid rgba(255,255,255,0.5);
+        }
+
+        /* Hero Text Float */
+        .hero h1 {
+            font-size: 4rem;
+            color: white;
+            text-shadow: 0 10px 20px rgba(0,0,0,0.3);
+            animation: float 3s ease-in-out infinite;
+        }
+        @keyframes float {
+            0%, 100% { transform: translateY(0); }
+            50% { transform: translateY(-15px); }
+        }
+
+        /* Item Cards - Staggered Entry */
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 25px;
+        }
+        .item-card {
+            background: white;
+            border-radius: 20px;
+            overflow: hidden;
+            box-shadow: 0 10px 20px rgba(0,0,0,0.1);
+            transition: all 0.3s;
+            opacity: 0; /* Hidden initially for animation */
+            animation: fadeInUp 0.6s forwards; /* Trigger animation */
+        }
+        
+        @keyframes fadeInUp {
+            from { opacity: 0; transform: translateY(30px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .item-card:hover { transform: translateY(-10px) scale(1.02); }
+        .item-card img { width: 100%; height: 200px; object-fit: cover; }
+        .info { padding: 1.5rem; }
+
+        /* Inputs & Buttons */
+        input, textarea, select {
+            width: 100%; padding: 15px; margin: 10px 0 20px 0;
+            border: 2px solid transparent; border-radius: 15px;
+            background: rgba(255,255,255,0.8);
+            box-shadow: inset 2px 2px 5px rgba(0,0,0,0.05);
+            transition: 0.3s; font-family: inherit;
+        }
+        input:focus, textarea:focus {
+            background: white; border-color: var(--secondary); outline: none;
+            box-shadow: 0 0 15px rgba(0, 210, 255, 0.3);
+        }
+
+        button.btn {
+            background: linear-gradient(45deg, var(--primary), #ff9a9e);
+            color: white; border: none; padding: 18px;
+            border-radius: 50px; cursor: pointer; width: 100%;
+            font-size: 1.2rem; font-weight: 800; text-transform: uppercase;
+            letter-spacing: 1px; transition: 0.3s;
+            position: relative; overflow: hidden;
+        }
+        button.btn:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 30px rgba(255, 0, 85, 0.5);
+        }
+        button.btn::after {
+            content: ''; position: absolute; top: 0; left: -100%;
+            width: 100%; height: 100%;
+            background: linear-gradient(90deg, transparent, rgba(255,255,255,0.4), transparent);
+            transition: 0.5s;
+        }
+        button.btn:hover::after { left: 100%; }
+
+        /* Status Badges */
+        .badge {
+            display: inline-block; padding: 5px 15px; border-radius: 20px;
+            color: white; font-weight: bold; font-size: 0.8rem;
+            text-transform: uppercase; margin-bottom: 10px;
+        }
+        .status-pending { background: #f1c40f; box-shadow: 0 0 10px #f1c40f; }
+        .status-resolved { background: #2ecc71; box-shadow: 0 0 10px #2ecc71; }
+        .status-reported { background: var(--secondary); box-shadow: 0 0 10px var(--secondary); }
+
+    </style>
+</head>
+<body>
+
+    <nav class="navbar">
+        <h1>🗣️ Speak & Seek</h1>
+        <div class="nav-links">
+            <button onclick="showSection('home')" class="active">Home</button>
+            <button onclick="showSection('lost-found')">Lost & Found</button>
+            <button onclick="showSection('student-voice')">Student Voice</button>
+        </div>
+    </nav>
+
+    <div class="container">
+        
+        <div id="home" class="section active">
+            <div style="text-align: center; padding: 4rem 0; color: white;">
+                <h1>CAMPUS <span style="color:var(--accent)">CONNECT</span></h1>
+                <p style="font-size: 1.5rem; opacity: 0.9; margin-bottom: 40px;">Lost something? Say something. We got you.</p>
+                
+                <div style="display: flex; justify-content: center; gap: 20px;">
+                    <button class="btn" style="width: auto; background: white; color: var(--primary);" onclick="showSection('lost-found')">🔍 Find Items</button>
+                    <button class="btn" style="width: auto; background: transparent; border: 2px solid white;" onclick="showSection('student-voice')">📢 Speak Up</button>
+                </div>
+            </div>
+        </div>
+
+        <div id="lost-found" class="section">
+            <div class="card">
+                <h2 style="color:var(--primary)">📦 Report Lost Item</h2>
+                <form id="lostForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <input type="text" id="lf_name" placeholder="Item Name" required>
+                        <input type="text" id="lf_location" placeholder="Location" required>
+                    </div>
+                    <textarea id="lf_desc" rows="2" placeholder="Description..."></textarea>
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <input type="text" id="lf_contact" placeholder="Contact Info" required>
+                        <input type="file" id="lf_image" accept="image/*">
+                    </div>
+                    <button type="submit" class="btn">🚀 Submit Report</button>
+                    <p id="lf_status" style="text-align:center; margin-top:10px; font-weight:bold;"></p>
+                </form>
+            </div>
+
+            <h2 style="color:white; text-shadow:2px 2px #000;">Recent Finds</h2>
+            <button onclick="loadLostItems()" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:bold;">🔄 Refresh Feed</button>
+            <div id="lostItemsGrid" class="grid-container"></div>
+        </div>
+
+        <div id="student-voice" class="section">
+            <div class="card" style="border-top: 5px solid var(--secondary);">
+                <h2 style="color:var(--secondary)">📢 Student Voice</h2>
+                <form id="voiceForm">
+                    <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                        <select id="sv_category">
+                            <option>Infrastructure 🏗️</option>
+                            <option>Academics 📚</option>
+                            <option>Sanitation 🧹</option>
+                            <option>Security 👮</option>
+                        </select>
+                        <select id="sv_severity">
+                            <option>Low Priority 🟢</option>
+                            <option>Medium Priority 🟡</option>
+                            <option>High Priority 🔴</option>
+                        </select>
+                    </div>
+                    <input type="text" id="sv_title" placeholder="Issue Title" required>
+                    <textarea id="sv_desc" rows="3" placeholder="Explain the issue..." required></textarea>
+                    <div style="margin-bottom:15px;">
+                        <input type="checkbox" id="sv_anonymous" style="width:auto;"> <label>Stay Anonymous 🕵️‍♂️</label>
+                    </div>
+                    <button type="submit" class="btn" style="background: linear-gradient(45deg, var(--secondary), #20bf55);">📩 Submit Issue</button>
+                    <p id="sv_status" style="text-align:center; margin-top:10px; font-weight:bold;"></p>
+                </form>
+            </div>
+
+            <h2 style="color:white; text-shadow:2px 2px #000;">📡 Status Tracker</h2>
+            <button onclick="loadIssues()" style="background:none; border:none; color:var(--accent); cursor:pointer; font-weight:bold;">🔄 Refresh Status</button>
+            <div id="issuesGrid" class="grid-container"></div>
+        </div>
+
+    </div>
+
+    <script>
+        const API_URL = "https://speak-seek-project.onrender.com"
+
+        function showSection(id) {
+            document.querySelectorAll('.section').forEach(s => s.classList.remove('active'));
+            document.querySelectorAll('.nav-links button').forEach(b => b.classList.remove('active'));
+            document.getElementById(id).classList.add('active');
+            event.target.classList.add('active');
+            if(id === 'lost-found') loadLostItems();
+            if(id === 'student-voice') loadIssues();
+        }
+
+        async function loadLostItems() {
+            const grid = document.getElementById('lostItemsGrid');
+            try {
+                const res = await fetch(`${API_URL}/get-lost-items`);
+                const items = await res.json();
+                grid.innerHTML = "";
+                items.forEach((item, index) => {
+                    const img = (item.image_url && item.image_url.startsWith('http')) ? item.image_url : 'https://via.placeholder.com/400x300?text=No+Image';
+                    // STAGGER ANIMATION: delay = index * 0.1s
+                    grid.innerHTML += `
+                        <div class="item-card" style="animation-delay: ${index * 0.1}s">
+                            <div style="position:relative;">
+                                <img src="${img}" alt="Item">
+                                <span class="badge status-reported" style="position:absolute; top:10px; right:10px;">FOUND</span>
+                            </div>
+                            <div class="info">
+                                <h3 style="margin:0; color:var(--primary)">${item.item_name}</h3>
+                                <p style="color:#666">📍 ${item.location}</p>
+                                <p style="font-size:0.9rem">${item.description}</p>
+                            </div>
+                        </div>
+                    `;
+                });
+            } catch (err) { console.error(err); }
+        }
+
+        async function loadIssues() {
+            const grid = document.getElementById('issuesGrid');
+            try {
+                const res = await fetch(`${API_URL}/get-issues`);
+                const issues = await res.json();
+                grid.innerHTML = "";
+                
+                issues.forEach((issue, index) => {
+                    let statusClass = 'status-pending';
+                    let statusText = issue.status || 'Pending'; 
+                    if(statusText === 'Resolved') statusClass = 'status-resolved';
+
+                    grid.innerHTML += `
+                        <div class="item-card" style="padding:20px; animation-delay: ${index * 0.1}s">
+                            <span class="badge ${statusClass}">${statusText}</span>
+                            <h3 style="margin-top:10px; color:#333">${issue.title}</h3>
+                            <p style="color:#888; font-size:0.85rem;">${issue.category} • ${issue.severity}</p>
+                            <p style="font-size:0.9rem; color:#555; margin-top:10px;">${issue.description}</p>
+                        </div>
+                    `;
+                });
+            } catch (err) { 
+                grid.innerHTML = "<p style='color:white'>Backend connection failed.</p>";
+            }
+        }
+
+        document.getElementById('lostForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const btn = e.target.querySelector('button');
+            const originalText = btn.innerText;
+            btn.innerText = "Uploading...";
+            
+            const fd = new FormData();
+            fd.append('item_name', document.getElementById('lf_name').value);
+            fd.append('location', document.getElementById('lf_location').value);
+            fd.append('description', document.getElementById('lf_desc').value);
+            fd.append('contact', document.getElementById('lf_contact').value);
+            fd.append('image', document.getElementById('lf_image').files[0]);
+
+            try {
+                const res = await fetch(`${API_URL}/report-lost-item`, { method:'POST', body:fd });
+                if(res.ok) {
+                    document.getElementById('lf_status').innerHTML = "✅ SENT!";
+                    document.getElementById('lf_status').style.color = "green";
+                    loadLostItems();
+                    e.target.reset();
+                }
+            } catch(err) { alert("Error connecting"); }
+            btn.innerText = originalText;
+        });
+
+        document.getElementById('voiceForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+            const data = {
+                category: document.getElementById('sv_category').value,
+                severity: document.getElementById('sv_severity').value,
+                title: document.getElementById('sv_title').value,
+                description: document.getElementById('sv_desc').value,
+                is_anonymous: document.getElementById('sv_anonymous').checked
+            };
+            try {
+                const res = await fetch(`${API_URL}/submit-issue`, {
+                    method:'POST', headers:{'Content-Type':'application/json'}, body:JSON.stringify(data)
+                });
+                if(res.ok) {
+                    alert("Issue Reported!");
+                    loadIssues();
+                    e.target.reset();
+                }
+            } catch(err) { alert("Error submitting"); }
+        });
+    </script>
+</body>
+</html>
