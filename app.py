@@ -22,10 +22,10 @@ cloudinary.config(
 )
 
 db_config = {
-    'host': os.environ.get('MYSQL_HOST'),
-    'user': os.environ.get('MYSQL_USER'),
-    'password': os.environ.get('MYSQL_PASSWORD'),
-    'database': os.environ.get('MYSQL_DATABASE')
+    'host': os.environ.get('gateway01.ap-southeast-1.prod.aws.tidbcloud.com'),
+    'user': os.environ.get('21DdULdSjZkwzfU.root'),
+    'password': os.environ.get('JNGxzQo2ipRFqber'),
+    'database': os.environ.get('test')
 }
 
 def get_db_connection():
