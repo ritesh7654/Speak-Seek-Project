@@ -26,7 +26,10 @@ db_config = {
     'user': os.environ.get('MYSQL_USER'),
     'password': os.environ.get('MYSQL_PASSWORD'),
     'database': os.environ.get('MYSQL_DATABASE'),
-    'port': 4000
+    'port': 4000,
+    'ssl_ca': '/etc/ssl/certs/ca-certificates.crt',
+    'ssl_verify_cert': True,
+    'ssl_verify_identity': True
 }
 def get_db_connection():
     return mysql.connector.connect(**db_config)
